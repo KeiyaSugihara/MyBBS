@@ -38,8 +38,6 @@ $stmt = $dbh -> prepare("INSERT INTO articles (name, body, img) VALUES (:name, :
 $stmt->bindParam(':name', $_POST['name']);
 $stmt->bindValue(':body',$_POST['body']);
 $stmt->bindParam(':img', $_POST['img']);
-//$name, PDO::PARAM_STR
- //1, PDO::PARAM_INT
 
 $stmt->execute();
 $dbh = null;
