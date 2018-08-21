@@ -1,5 +1,5 @@
 <?php
-require_once('method.php');
+require_once('Pagefeature.php');
 ?>
 
 
@@ -29,7 +29,7 @@ require_once('method.php');
 
 
          <div class="nametimedate">
-            <?php  Method::printdate($select_data['name'],$select_data['add_date'],$select_data['body']); ?>
+            <?php  Pagefeature::articles_printdate($select_data['id'],$select_data['name'],$select_data['add_date'],$select_data['body']); ?>
          </div>
 
      </div>
@@ -37,7 +37,7 @@ require_once('method.php');
      <div class="posted">
        <h2>返信機能</h2>
 
-          <?php Method::formsimg("tweet","replydate.php",$idnum); ?>
+          <?php Pagefeature::contribution_input("tweet","replydate.php",$idnum); ?>
 
       <p></p>
 

@@ -16,21 +16,10 @@ textarea{
   width: 250px;
 }
 
-main{
-  height: 5000px;
-
-}
 
 
-
-.replyDate{
-  text-indent: 5em;
- clear: left;
-}
-
-.replyDatere,commentReply{
-  text-indent: 10em;
- clear: left;
+.comentall{
+  float:left;
 }
 
 .contribution{
@@ -38,10 +27,25 @@ position: relative;
 }
 
 
-.comentall{
-  float:left;
+.replyDate{
+  left:5em;
+ position: relative;
 }
 
+.replyDatere{
+ position: relative;
+}
+
+.indexclass{
+  left:5em;
+  position: relative;
+}
+
+
 .posted{
-clear: left;
+ width: 50px;
+}
+
+p.box {
+   border-bottom: 1px dotted black;
 }

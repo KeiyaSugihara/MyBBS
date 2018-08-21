@@ -1,5 +1,5 @@
 <?php
-require_once('method.php');
+require_once('Pagefeature.php');
 
 ?>
 
@@ -8,6 +8,10 @@ require_once('method.php');
   <head>
    <title>MyBBS</title>
    <link rel="stylesheet" type="text/css" href="stylesheet.php">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js" type="text/javascript"></script>
+
   </head>
  <body>
    <header>
@@ -37,7 +41,7 @@ require_once('method.php');
 
 
        // postsテーブルから3件のデータを取得する
-       $articles = $dbh->prepare("SELECT  *	FROM articles LIMIT {$start}, 3");
+       $articles = $dbh->prepare("SELECT * FROM articles LIMIT {$start}, 3");
        $articles->execute();
        $articles = $articles->fetchAll(PDO::FETCH_ASSOC);?>
           <div class="comentall">
@@ -45,61 +49,49 @@ require_once('method.php');
          <div class="contribution">
 
 
-          <!-- 記事の表示   -->
-        <?php  Method::printdate($post['name'],$post['add_date'],$post['body']); ?>
-　　　　　　<!-- 記事に返信 -->
-        <?php Method::forms('reply','reply.php',$post['id'],'記事に返信'); ?>
-        </div>
+
+        <?php  Pagefeature::articles_printdate($post['id'],$post['name'],$post['add_date'],$post['body']); //記事の表示
+               Pagefeature::Posted_button('reply','reply.php',$post['id'],'記事に返信'); // 記事に返信?>
+             <p class="box"></p>
 
 
+                <?php foreach ($dbh->query("select distinct(articles_id) from reply") as $row) : //返信記事の表示
 
-
-            <!-- 返信記事の表示 -->
-                <?php foreach ($dbh->query("select distinct(articles_id) from reply") as $row) :?>
-
-                <?php  $hit_number = $row['articles_id'];?>
-                <?php if($hit_number == $post['id']):?>
-                   <?php $reply_number = $hit_number;?>
-                   <?php foreach ($dbh->query("select * from reply where articles_id = $reply_number") as $rep) :?>
-                              <div class="replyDate">
-                                <?php  Method::printdate($rep['name'],$rep['add_date'],$rep['body']); ?>
-                                <!-- コメント返信機能 -->
-                                <?php Method::forms('commentReply','commentReply.php',$rep['id'],'コメントに返信'); ?>
-                              </div>
-
+                       $hit_number = $row['articles_id'];
+                         if($hit_number == $post['id']):
+                            $reply_number = $hit_number;
+                               foreach ($dbh->query("select * from reply where articles_id = $reply_number") as $rep) :?>
+                                 <div class="replyDate">
+                                <?php  Pagefeature::reply_printdate($rep['id'],$rep['name'],$rep['add_date'],$rep['body']);
+                                 // コメント返信機能
+                                 Pagefeature::Posted_button('commentReply','commentReply.php',$rep['id'],'コメントに返信'); ?>
+                                  <p class="box"></p>
 
 
                                <div class="replyDatere">
-                                   <!-- 再帰関数 -->
-                                   <?php Method::recursiveFunction($rep['id']); ?>
+                                   <?php Pagefeature::recursiveFunction($rep['id']); //再帰関数 ?>
                                </div>
+                                
 
-
+                             </div>
                     <?php endforeach ?>
                   <?php endif ?>
                 <?php endforeach ?>
 
          <?php endforeach ?>
 
+</div>
 
-
-
-      <?php Method::paging(); ?>
-
-
-　　　<!--投稿機能  -->
+      <?php Pagefeature::paging(); //ページング機能 ?>
 
        <h2>投稿機能</h2>
 
-        <?php Method::formsimg("tweet","data.php",$formid = null); ?>
+        <?php Pagefeature::contribution_input("tweet","data.php",$formid = null); //投稿機能 ?>
 
       <p></p>
 
 
      </div>
-
-
-
 
    </main>
 
